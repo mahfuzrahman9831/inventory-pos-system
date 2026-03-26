@@ -1,0 +1,112 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      Role     @default(STAFF)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  sales     Sale[]
+}
+
+model Category {
+  id        String    @id @default(cuid())
+  name      String    @unique
+  products  Product[]
+  createdAt DateTime  @default(now())
+}
+
+model Supplier {
+  id        String    @id @default(cuid())
+  name      String
+  phone     String?
+  email     String?
+  address   String?
+  products  Product[]
+  createdAt DateTime  @default(now())
+}
+
+model Product {
+  id          String      @id @default(cuid())
+  name        String
+  sku         String      @unique
+  barcode     String?
+  price       Float
+  costPrice   Float
+  stock       Int         @default(0)
+  minStock    Int         @default(5)
+  unit        String      @default("pcs")
+  categoryId  String
+  supplierId  String?
+  category    Category    @relation(fields: [categoryId], references: [id])
+  supplier    Supplier?   @relation(fields: [supplierId], references: [id])
+  saleItems   SaleItem[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model Customer {
+  id        String   @id @default(cuid())
+  name      String
+  phone     String?
+  email     String?
+  address   String?
+  sales     Sale[]
+  createdAt DateTime @default(now())
+}
+
+model Sale {
+  id          String      @id @default(cuid())
+  invoiceNo   String      @unique
+  customerId  String?
+  userId      String
+  subtotal    Float
+  discount    Float       @default(0)
+  tax         Float       @default(0)
+  total       Float
+  paid        Float
+  change      Float       @default(0)
+  paymentType PaymentType @default(CASH)
+  status      SaleStatus  @default(COMPLETED)
+  customer    Customer?   @relation(fields: [customerId], references: [id])
+  user        User        @relation(fields: [userId], references: [id])
+  items       SaleItem[]
+  createdAt   DateTime    @default(now())
+}
+
+model SaleItem {
+  id        String  @id @default(cuid())
+  saleId    String
+  productId String
+  quantity  Int
+  price     Float
+  total     Float
+  sale      Sale    @relation(fields: [saleId], references: [id])
+  product   Product @relation(fields: [productId], references: [id])
+}
+
+enum Role {
+  ADMIN
+  MANAGER
+  STAFF
+}
+
+enum PaymentType {
+  CASH
+  CARD
+  MOBILE
+}
+
+enum SaleStatus {
+  COMPLETED
+  REFUNDED
+  PENDING
+}
