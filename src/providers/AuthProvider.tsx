@@ -1,0 +1,11 @@
+'use client' // এটি অবশ্যই থাকতে হবে
+
+import { SessionProvider } from "next-auth/react";
+
+export default function AuthProvider({ children }: { children: React.ReactNode }) {
+  return (
+    <SessionProvider>
+      {children}
+    </SessionProvider>
+  );
+}

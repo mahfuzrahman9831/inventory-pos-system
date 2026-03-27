@@ -35,22 +35,23 @@ model Supplier {
 }
 
 model Product {
-  id          String      @id @default(cuid())
-  name        String
-  sku         String      @unique
-  barcode     String?
-  price       Float
-  costPrice   Float
-  stock       Int         @default(0)
-  minStock    Int         @default(5)
-  unit        String      @default("pcs")
-  categoryId  String
-  supplierId  String?
-  category    Category    @relation(fields: [categoryId], references: [id])
-  supplier    Supplier?   @relation(fields: [supplierId], references: [id])
-  saleItems   SaleItem[]
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+  id                String             @id @default(cuid())
+  name              String
+  sku               String             @unique
+  barcode           String?
+  price             Float
+  costPrice         Float
+  stock             Int                @default(0)
+  minStock          Int                @default(5)
+  unit              String             @default("pcs")
+  categoryId        String
+  supplierId        String?
+  category          Category           @relation(fields: [categoryId], references: [id])
+  supplier          Supplier?          @relation(fields: [supplierId], references: [id])
+  saleItems         SaleItem[]
+  marketingExpenses MarketingExpense[]
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
 }
 
 model Customer {
@@ -91,6 +92,17 @@ model SaleItem {
   total     Float
   sale      Sale    @relation(fields: [saleId], references: [id])
   product   Product @relation(fields: [productId], references: [id])
+}
+
+model MarketingExpense {
+  id        String   @id @default(cuid())
+  productId String
+  quantity  Int
+  costPrice Float
+  note      String?
+  date      DateTime @default(now())
+  product   Product  @relation(fields: [productId], references: [id])
+  createdAt DateTime @default(now())
 }
 
 enum Role {
