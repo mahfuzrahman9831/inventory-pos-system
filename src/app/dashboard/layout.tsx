@@ -16,9 +16,9 @@ export default function DashboardLayout({
       }}
     >
       <Sidebar />
-      <div className="md:ml-64 flex flex-col min-h-screen">
+      <div className="md:ml-64 flex flex-col" style={{ minHeight: '100vh' }}>
         <Header title="Digital Curator" />
-        <main className="flex-1 overflow-y-auto">
+        <main className="flex-1" style={{ overflowY: 'auto' }}>
           {children}
         </main>
       </div>

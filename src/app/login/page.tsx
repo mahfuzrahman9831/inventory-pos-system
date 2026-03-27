@@ -58,6 +58,8 @@ export default function LoginPage() {
           backgroundColor: "#0b1326",
           color: "#dae2fd",
           fontFamily: "Inter, sans-serif",
+          overflow: 'hidden',  
+          height: '100vh',
         }}
       >
         {/* Left Side এর পুরো section টা replace করুন */}

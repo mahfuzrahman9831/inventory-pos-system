@@ -73,8 +73,8 @@ export default function Sidebar() {
           </Link>
 
           <button
-            onClick={() => signOut({ callbackUrl: '/login' })}
-            className="w-full flex items-center gap-3 px-4 py-2 transition-all hover:bg-white/5 rounded-lg"
+            onClick={() => signOut({ callbackUrl: '/login', redirect: true })}
+            className="w-full flex items-center gap-3 px-4 py-2 transition-all hover:bg-white/5 rounded-lg cursor-pointer"
             style={{ color: '#94a3b8' }}>
             <span className="material-symbols-outlined">logout</span>
             <span>Logout</span>
