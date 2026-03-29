@@ -11,6 +11,8 @@ const navItems = [
   { href: '/sales', icon: 'payments', label: 'Sales' },
   { href: '/suppliers', icon: 'local_shipping', label: 'Suppliers' },
   { href: '/customers', icon: 'groups', label: 'Customers' },
+  { href: '/staffs', icon: 'badge', label: 'Staffs' },
+  { href: '/barcode', icon: 'qr_code_2', label: 'Generate Barcode' },
   { href: '/marketing', icon: 'campaign', label: 'Marketing' },
   { href: '/reports', icon: 'analytics', label: 'Reports' },
   { href: '/settings', icon: 'settings', label: 'Settings' },

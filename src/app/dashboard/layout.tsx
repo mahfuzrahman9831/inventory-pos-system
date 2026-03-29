@@ -1,4 +1,4 @@
-import Sidebar from "@/app/components/layout/Sidebar";
+import Sidebar from '@/components/layout/Sidebar'
 import Header from "@/app/components/layout/Header";
 
 // এখানে আর কোনো Provider লাগবে না, কারণ Root Layout-এ আছে
