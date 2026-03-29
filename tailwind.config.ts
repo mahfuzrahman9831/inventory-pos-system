@@ -68,4 +68,23 @@ const config: Config = {
   plugins: [],
 };
 
+module.exports = {
+  darkMode: "class",
+  content: [
+    "./app/**/*.{js,ts,jsx,tsx}",
+    "./components/**/*.{js,ts,jsx,tsx}",
+  ],
+  theme: {
+    extend: {
+      colors: {
+        background: "#0b1326",
+        surface: "#171f33",
+        primary: "#22c55e",
+        "primary-container": "#4ae176",
+      },
+    },
+  },
+  plugins: [],
+};
+
 export default config;

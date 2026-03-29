@@ -1,54 +1,47 @@
 import { NextRequest, NextResponse } from 'next/server'
 import bcrypt from 'bcryptjs'
-
-// ডামি ডাটাবেস (পরে MongoDB/PostgreSQL ব্যবহার করবেন)
-const users: any[] = []
+import { prisma } from '@/lib/prisma'
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json()
-    const { fullName, shopName, email, password } = body
+    const { name, email, password } = await req.json()
 
-    // ভ্যালিডেশন
-    if (!fullName || !shopName || !email || !password) {
+    if (!name || !email || !password) {
       return NextResponse.json(
-        { message: 'সব ফিল্ড পূরণ করুন!' },
+        { message: 'সব field পূরণ করুন!' },
         { status: 400 }
       )
     }
 
-    // চেক করুন ইমেইল আগে থেকে আছে কিনা
-    const existingUser = users.find((u) => u.email === email)
+    const existingUser = await prisma.user.findUnique({
+      where: { email },
+    })
+
     if (existingUser) {
       return NextResponse.json(
-        { message: 'এই ইমেইল দিয়ে আগে থেকেই অ্যাকাউন্ট আছে!' },
+        { message: 'এই email দিয়ে আগেই account আছে!' },
         { status: 400 }
       )
     }
 
-    // পাসওয়ার্ড হ্যাশ
     const hashedPassword = await bcrypt.hash(password, 10)
 
-    // ইউজার সেভ
-    const newUser = {
-      id: Date.now().toString(),
-      fullName,
-      shopName,
-      email,
-      password: hashedPassword,
-      createdAt: new Date(),
-    }
-
-    users.push(newUser)
+    const user = await prisma.user.create({
+      data: {
+        name,
+        email,
+        password: hashedPassword,
+        role: 'STAFF',
+      },
+    })
 
     return NextResponse.json(
-      { message: 'অ্যাকাউন্ট তৈরি হয়েছে!', success: true },
+      { message: 'Account তৈরি হয়েছে!', userId: user.id },
       { status: 201 }
     )
   } catch (error) {
-    console.error('Registration error:', error)
     return NextResponse.json(
-      { message: 'সার্ভার এরর!' },
+      { message: 'Something went wrong!' },
       { status: 500 }
     )
   }
